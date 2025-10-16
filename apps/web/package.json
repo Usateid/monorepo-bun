@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "vercel:check": "bash check-build.sh"
   },
   "dependencies": {
     "@repo/db": "workspace:*",

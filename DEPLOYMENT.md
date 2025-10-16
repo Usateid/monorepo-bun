@@ -40,6 +40,22 @@ NEXT_PUBLIC_API_URL=https://tua-api.onrender.com
 
 > ⚠️ **Nota**: Aggiungerai l'URL reale delle API dopo averle deployate su Render (vedi sotto)
 
+### 🚀 Build Ottimizzato per Monorepo
+
+Il progetto include uno script intelligente (`check-build.sh`) che **skippa il build su Vercel** quando le modifiche sono solo in altre parti del monorepo (es. `apps/api`).
+
+**Come funziona:**
+- ✅ Builda se modifichi `apps/web/`
+- ✅ Builda se modifichi `packages/db/` (web dipende da questo)
+- ✅ Builda se modifichi file root come `package.json`, `bun.lock`
+- ⏭️ **Skippa** se modifichi solo `apps/api/`
+- ⏭️ **Skippa** se modifichi solo README o altri file non rilevanti
+
+Questo ti fa risparmiare:
+- ⚡ Tempo di build
+- 💰 Build minutes su Vercel
+- 🌍 Consumi energetici
+
 ### Passo 4: Deploy
 
 Click su **"Deploy"** e aspetta che Vercel completi il build!
@@ -66,13 +82,34 @@ I file necessari sono già stati creati:
    - **Name**: `hono-api` (o il nome che preferisci)
    - **Region**: Europe (Frankfurt) o la più vicina
    - **Branch**: `main` (o il tuo branch principale)
-   - **Root Directory**: Lascia vuoto o `.` (root del progetto)
-   - **Dockerfile Path**: `./apps/api/Dockerfile`
-   - **Docker Context**: `.` (root del progetto)
+   - **Root Directory**: ⚠️ **LASCIA VUOTO** o metti solo `.` (root del progetto)
+   - **Dockerfile Path**: `apps/api/Dockerfile`
    - **Runtime**: Docker
    - **Plan**: Free (o superiore se necessario)
 
-> ⚠️ **Importante**: Il Docker context deve essere la root del progetto per permettere l'accesso al package `@repo/db` del monorepo.
+> ⚠️ **CRITICO**: Il campo "Root Directory" deve essere **VUOTO** o contenere solo `.`  
+> **NON** impostare `apps/api` come Root Directory o il build fallirà con l'errore "not found"!  
+> Il Docker context deve essere la root del progetto per permettere l'accesso al package `@repo/db` del monorepo.
+
+> 💡 **Alternativa**: Usa il Blueprint caricando il file `apps/api/render.yaml` che configurerà tutto automaticamente.
+
+📖 Vedi `apps/api/RENDER_SETUP.md` per istruzioni dettagliate e troubleshooting.
+
+### 🚀 Build Ottimizzato per Monorepo
+
+Il file `render.yaml` include un **Build Filter** che evita deploy inutili su Render:
+
+**Come funziona:**
+- ✅ Deploya se modifichi `apps/api/` o `packages/db/`
+- ⏭️ **Skippa** se modifichi solo `apps/web/` (nessun impatto sull'API)
+- ⏭️ **Skippa** se modifichi solo documentazione (`.md`)
+
+Questo risparmia:
+- ⚡ Tempo di build (~3-5 minuti per deploy)
+- 💰 Build hours su Render (750h/mese nel free tier)
+- 🌍 Risorse computazionali
+
+> 💡 **Raccomandazione**: Usa il **Blueprint** (opzione in `render.yaml`) per attivare automaticamente il Build Filter!
 
 #### Passo 3: Variabili d'ambiente su Render
 
@@ -252,6 +289,26 @@ Se riscontri ancora questo errore, verifica che:
 - **Vercel Pro**: $20/mese (team collaboration, analytics avanzate)
 - **Render Starter**: $7/mese (sempre attivo, più risorse)
 - **Neon Scale**: Pay-as-you-go (da $19/mese)
+
+---
+
+## 📊 Riepilogo Deployment Intelligente
+
+Grazie ai **Build Filter** configurati, il sistema deploya solo dove necessario:
+
+| Scenario | Render (API) | Vercel (Frontend) | Risparmio |
+|----------|--------------|-------------------|-----------|
+| 🔧 Push solo `apps/api/` | ✅ Deploy | ⏭️ Skip | ~2-3 min |
+| 🎨 Push solo `apps/web/` | ⏭️ Skip | ✅ Build | ~3-5 min |
+| 📦 Push `packages/db/` | ✅ Deploy | ✅ Build | - |
+| 📝 Push solo `*.md` | ⏭️ Skip | ⏭️ Skip | ~5-8 min |
+| 🚀 Push entrambi | ✅ Deploy | ✅ Build | - |
+
+**Vantaggi:**
+- ⚡ **Deploy più veloci** - Solo ciò che serve viene ribuildata
+- 💰 **Risparmio risorse** - Meno build minutes consumati
+- 🌍 **Sostenibilità** - Meno energia sprecata
+- 📊 **Log più puliti** - Deploy solo quando rilevante
 
 ---
 

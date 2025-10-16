@@ -35,16 +35,29 @@ Per testare il build Docker localmente prima del deploy:
 
 ```bash
 # Dalla root del monorepo
+bun run docker:build
+
+# Esegui il container (assicurati di avere un DATABASE_URL valido nel .env)
+bun run docker:run
+
+# Oppure build + run in un comando
+bun run docker:test
+
+# Test manuale
 docker build -f apps/api/Dockerfile -t hono-api .
+docker run -p 3001:3001 --env-file .env hono-api
 
-# Esegui il container (assicurati di avere un DATABASE_URL valido)
-docker run -p 3001:3001 -e DATABASE_URL="postgresql://..." hono-api
-
-# Test dell'endpoint
+# Test dell'endpoint (in un altro terminale)
 curl http://localhost:3001/
 ```
 
 > ⚠️ **Nota**: Il Dockerfile deve essere eseguito dalla root del monorepo perché ha bisogno di accedere al package `@repo/db`.
+
+### Deploy su Render
+
+Vedi il file `RENDER_SETUP.md` in questa directory per istruzioni dettagliate sulla configurazione di Render.
+
+**⚠️ IMPORTANTE**: Su Render, assicurati che il campo "Root Directory" sia **VUOTO** o contenga solo `.` - NON impostarlo su `apps/api`!
 
 ## 🛠️ Stack Tecnologico
 

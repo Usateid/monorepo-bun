@@ -34,6 +34,15 @@ NEXT_PUBLIC_API_URL=https://tua-api.onrender.com
 
 Vedi [DEPLOYMENT.md](../../DEPLOYMENT.md) nella root del progetto per istruzioni complete sul deploy su Vercel.
 
+### 🚀 Build Intelligente su Vercel
+
+Questo progetto include un **Ignored Build Step** ottimizzato per monorepo:
+
+- ✅ **Builda** quando modifichi `apps/web/` o `packages/db/`
+- ⏭️ **Skippa** quando modifichi solo `apps/api/` (nessun impatto sul frontend)
+
+Questo risparmia tempo e build minutes su Vercel! Vedi [VERCEL_BUILD.md](./VERCEL_BUILD.md) per dettagli.
+
 ## 🛠️ Stack Tecnologico
 
 - **Framework**: Next.js 15 (con Turbopack)

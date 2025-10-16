@@ -5,6 +5,17 @@ services:
     plan: free # Cambia a 'starter' o altro plan se necessario
     dockerfilePath: ./apps/api/Dockerfile
     dockerContext: .
+    # Build Filter: deploya solo se cambiano questi path
+    buildFilter:
+      paths:
+        - apps/api/**
+        - packages/db/**
+        - package.json
+        - bun.lock
+        - apps/api/Dockerfile
+      ignoredPaths:
+        - apps/web/**
+        - "**.md"
     envVars:
       - key: DATABASE_URL
         sync: false # Da configurare nel dashboard Render
