@@ -60,7 +60,36 @@ app.get("/users", async (c) => {
 //   //   return c.json(user[0]);
 // });
 
-export default {
-  port: 3001,
+const port = process.env.PORT || 3001;
+
+// Start server and store server instance
+const server = Bun.serve({
+  port,
   fetch: app.fetch,
+});
+
+console.log(`🚀 Server is running on http://localhost:${port}`);
+
+// Graceful shutdown handler
+const gracefulShutdown = async (signal: string) => {
+  console.log(`\n${signal} received. Starting graceful shutdown...`);
+
+  try {
+    // Stop accepting new connections
+    server.stop();
+    console.log("✅ Server stopped accepting new connections");
+
+    // Give ongoing requests time to complete (max 10 seconds)
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    console.log("✅ Graceful shutdown completed");
+    process.exit(0);
+  } catch (error) {
+    console.error("❌ Error during graceful shutdown:", error);
+    process.exit(1);
+  }
 };
+
+// Handle termination signals
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+process.on("SIGINT", () => gracefulShutdown("SIGINT"));
