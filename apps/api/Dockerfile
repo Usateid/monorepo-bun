@@ -6,11 +6,16 @@ WORKDIR /app
 
 # Copia i file di configurazione del monorepo dalla root
 COPY package.json bun.lock* ./
+
+# Crea le directory necessarie per i workspace
+RUN mkdir -p apps/api packages/db
+
+# Copia i package.json dei workspace
 COPY apps/api/package.json ./apps/api/
 COPY packages/db/package.json ./packages/db/
 
 # Installa le dipendenze
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # Copia il codice del database package
 COPY packages/db ./packages/db
