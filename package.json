@@ -1,0 +1,14 @@
+{
+  "name": "nextjs-hono-monorepo-bun",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "web": "bun --env-file=.env --filter web dev",
+    "api": "bun --env-file=.env --filter api dev"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

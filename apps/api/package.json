@@ -1,0 +1,23 @@
+{
+  "name": "api",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun --watch --env-file=.env run src/index.ts",
+    "build": "echo 'No build step needed for Bun'",
+    "start": "bun run src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "hono": "^4.9.12",
+    "@repo/db": "workspace:*",
+    "drizzle-orm": "^0.44.6",
+    "dotenv": "^16.4.7"
+  }
+}
