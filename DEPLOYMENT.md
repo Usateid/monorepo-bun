@@ -66,9 +66,13 @@ I file necessari sono già stati creati:
    - **Name**: `hono-api` (o il nome che preferisci)
    - **Region**: Europe (Frankfurt) o la più vicina
    - **Branch**: `main` (o il tuo branch principale)
-   - **Root Directory**: `apps/api`
+   - **Root Directory**: Lascia vuoto o `.` (root del progetto)
+   - **Dockerfile Path**: `./apps/api/Dockerfile`
+   - **Docker Context**: `.` (root del progetto)
    - **Runtime**: Docker
    - **Plan**: Free (o superiore se necessario)
+
+> ⚠️ **Importante**: Il Docker context deve essere la root del progetto per permettere l'accesso al package `@repo/db` del monorepo.
 
 #### Passo 3: Variabili d'ambiente su Render
 
@@ -213,13 +217,12 @@ Visita il tuo dominio Vercel e verifica che tutto funzioni correttamente.
 
 ### Problema: "Cannot find module '@repo/db'"
 
-**Soluzione**: Nel monorepo, Render potrebbe non risolvere i workspace. Opzioni:
+**Soluzione**: ✅ Questo problema è già risolto! Il `Dockerfile` e `render.yaml` sono configurati correttamente per gestire il monorepo.
 
-1. **Opzione A**: Build dalla root del monorepo
-   - Root Directory: `.` (root del progetto)
-   - Start Command: `cd apps/api && bun run start`
-
-2. **Opzione B**: Converti il pacchetto `@repo/db` in un pacchetto npm pubblicato
+Se riscontri ancora questo errore, verifica che:
+1. Il Docker context sia impostato a `.` (root del progetto)
+2. Il Dockerfile path sia `./apps/api/Dockerfile`
+3. Il file `.dockerignore` nella root non escluda cartelle necessarie come `packages/db`
 
 ### Problema: "Database connection failed"
 

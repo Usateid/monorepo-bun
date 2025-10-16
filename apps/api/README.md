@@ -29,6 +29,23 @@ PORT=3001
 
 Vedi [DEPLOYMENT.md](../../DEPLOYMENT.md) nella root del progetto per istruzioni complete sul deploy su Render.
 
+### Test Docker Build Locale
+
+Per testare il build Docker localmente prima del deploy:
+
+```bash
+# Dalla root del monorepo
+docker build -f apps/api/Dockerfile -t hono-api .
+
+# Esegui il container (assicurati di avere un DATABASE_URL valido)
+docker run -p 3001:3001 -e DATABASE_URL="postgresql://..." hono-api
+
+# Test dell'endpoint
+curl http://localhost:3001/
+```
+
+> ⚠️ **Nota**: Il Dockerfile deve essere eseguito dalla root del monorepo perché ha bisogno di accedere al package `@repo/db`.
+
 ## 🛠️ Stack Tecnologico
 
 - **Runtime**: Bun
