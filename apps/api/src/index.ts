@@ -29,7 +29,11 @@ app.get("/health", (c) => {
 });
 app.get("/users", async (c) => {
   try {
-    const userList = await db.select().from(users);
+    const userList = [
+      { id: 1, name: "John Doe", email: "john.doe@example.com" },
+      { id: 2, name: "Jane Doe", email: "jane.doe@example.com" },
+    ];
+    // const userList = await db.select().from(users);
     return c.json(userList);
   } catch (error) {
     console.error("Error fetching users:", error);
