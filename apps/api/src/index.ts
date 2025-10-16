@@ -21,9 +21,12 @@ app.use(
 );
 
 app.get("/", (c) => {
-  return c.json({ message: "Alice" });
+  return c.json({ message: "Welcome!" });
 });
-
+app.get("/health", (c) => {
+  const user = [{ id: 1, name: "John Doe", email: "john.doe@example.com" }];
+  return c.json(user);
+});
 app.get("/users", async (c) => {
   try {
     const userList = await db.select().from(users);
