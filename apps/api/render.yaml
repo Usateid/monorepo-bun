@@ -3,12 +3,11 @@ services:
     name: hono-api
     runtime: docker
     plan: free # Cambia a 'starter' o altro plan se necessario
-    rootDir: apps/api
-    buildCommand: bun install
-    startCommand: bun run start
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
     envVars:
-      - key: BUN_VERSION
-        value: latest
       - key: DATABASE_URL
         sync: false # Da configurare nel dashboard Render
+      - key: PORT
+        value: 3001
 
