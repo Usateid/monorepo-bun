@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db, user, session, account, verification } from "@repo/db";
+import { db, user, session, account, verification, SelectUser } from "@repo/db";
 import { headers } from "next/headers";
 import { nextCookies } from "better-auth/next-js";
 
@@ -21,10 +21,20 @@ export const auth = betterAuth({
     enabled: true,
   },
   socialProviders: {},
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: true,
+        defaultValue: "user",
+      },
+    },
+  },
   plugins: [nextCookies()],
 });
 
 export type Session = typeof auth.$Infer.Session;
+// Ora Better Auth include il campo role grazie a additionalFields
 export type User = typeof auth.$Infer.Session.user;
 
 // Funzione helper per ottenere la sessione server-side

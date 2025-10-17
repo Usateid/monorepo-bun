@@ -132,6 +132,31 @@ export default function LoginPage() {
                   defaultValue={state.password}
                 />
               </div>
+              {isSignUp && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label
+                      htmlFor="confirmPassword"
+                      className="text-sm font-medium text-sage-900"
+                    >
+                      Conferma password
+                    </label>
+                  </div>
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    autoComplete="confirmPassword"
+                    required
+                    aria-required="true"
+                    aria-invalid={state.error ? "true" : "false"}
+                    aria-describedby={state.error ? "form-error" : undefined}
+                    className="w-full px-4 py-3 rounded-lg border border-sage-300 bg-white text-sage-900 placeholder-sage-400 focus:outline-none focus:ring-2 focus:ring-sage-600 focus:border-transparent transition-all"
+                    placeholder="••••••••"
+                    defaultValue={state.confirmPassword}
+                  />
+                </div>
+              )}
               {state.error && (
                 <Alert variant="destructive">
                   <AlertCircleIcon />

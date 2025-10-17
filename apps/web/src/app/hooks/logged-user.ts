@@ -6,5 +6,6 @@ export async function getLoggedUser() {
   return {
     user: session?.user,
     isAuthenticated: !!session,
+    isAdmin: session?.user.role === "admin",
   };
 }

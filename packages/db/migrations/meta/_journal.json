@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1760547703851,
-      "tag": "0000_thick_albert_cleary",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1760684333818,
-      "tag": "0001_condemned_mordo",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1760684818786,
-      "tag": "0002_shallow_ironclad",
+      "when": 1760706261514,
+      "tag": "0000_ambitious_payback",
       "breakpoints": true
     }
   ]
