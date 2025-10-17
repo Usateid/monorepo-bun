@@ -17,6 +17,7 @@
   "dependencies": {
     "hono": "^4.9.12",
     "@repo/db": "workspace:*",
+    "@repo/validation": "workspace:*",
     "drizzle-orm": "^0.44.6",
     "dotenv": "^16.4.7"
   }

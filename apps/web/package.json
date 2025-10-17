@@ -10,12 +10,21 @@
     "vercel:check": "bash check-build.sh"
   },
   "dependencies": {
+    "@radix-ui/react-avatar": "^1.1.10",
+    "@radix-ui/react-separator": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
     "@repo/db": "workspace:*",
+    "@repo/validation": "workspace:*",
     "@tanstack/react-query": "^5.90.3",
     "better-auth": "^1.3.27",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.546.0",
     "next": "15.5.5",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "tailwind-merge": "^3.3.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -27,6 +36,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.5.5",
     "tailwindcss": "^4",
+    "tailwindcss-animated": "^2.0.0",
     "typescript": "^5"
   }
 }

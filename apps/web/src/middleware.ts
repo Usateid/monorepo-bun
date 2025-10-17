@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { auth } from "@/lib/auth";
 
 // Route pubbliche che non richiedono autenticazione
-const publicRoutes = ["/login", "/api/auth"];
+const publicRoutes = ["/", "/login", "/api/auth", "/blog"];
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Permetti l'accesso alle route pubbliche
@@ -24,11 +25,26 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Verifica se c'è un cookie di sessione
-  const sessionToken = request.cookies.get("better-auth.session_token");
+  // Verifica la sessione server-side usando Better Auth
+  try {
+    // Crea una Request standard per Better Auth usando l'URL e gli headers originali
+    const requestForAuth = new Request(request.url, {
+      headers: request.headers,
+      method: request.method,
+    });
 
-  // Se non c'è sessione, reindirizza al login
-  if (!sessionToken && pathname !== "/") {
+    const session = await auth.api.getSession({
+      headers: requestForAuth.headers,
+    });
+
+    // Better Auth restituisce un oggetto con { session, user } o null
+    // Se non c'è sessione valida, reindirizza al login
+    if (!session || !session.session) {
+      console.log("No valid session found, redirecting to /login");
+      const url = new URL("/login", request.url);
+      return NextResponse.redirect(url);
+    }
+  } catch (error) {
     const url = new URL("/login", request.url);
     return NextResponse.redirect(url);
   }
