@@ -36,12 +36,13 @@ PORT=3001
 
 # Next.js
 NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 ### 3. Esegui le migrazioni del database
 
 ```bash
-cd packages/db
+# Dalla root del progetto
 bun run db:push
 ```
 
@@ -67,6 +68,7 @@ bun run api
 - **React 19** - Libreria UI
 - **Tailwind CSS 4** - Styling
 - **TypeScript** - Type safety
+- **Better Auth** - Autenticazione moderna
 
 ### Backend
 - **Hono** - Framework web veloce e leggero
@@ -81,18 +83,54 @@ bun run api
 
 ```bash
 # Sviluppo
-bun run web          # Avvia frontend
-bun run api          # Avvia API
+bun run web              # Avvia frontend (http://localhost:3000)
+bun run api              # Avvia API (http://localhost:3001)
 
-# Database
-cd packages/db
-bun run db:push      # Push schema al database
-bun run db:studio    # Apri Drizzle Studio (UI per DB)
+# Database (dalla root)
+bun run db:generate      # Genera migrazioni SQL
+bun run db:push          # Push schema al database (dev)
+bun run db:migrate       # Applica migrazioni (prod)
+bun run db:studio        # Apri Drizzle Studio (UI per DB)
 
 # Build (frontend)
 cd apps/web
 bun run build
 ```
+
+## 🔐 Autenticazione con Better Auth
+
+Il progetto include **Better Auth** per l'autenticazione:
+
+### Features
+- ✅ Login/Registrazione con Email e Password
+- ✅ Gestione Sessioni sicure
+- ✅ Protezione route automatica con Middleware
+- ✅ Hook React per gestire l'autenticazione
+- ✅ Pronto per provider sociali (GitHub, Google, etc.)
+
+### Utilizzo Base
+
+```tsx
+import { useSession, signIn, signUp, signOut } from "@/lib/auth-client";
+
+// In un componente
+const { data: session, isPending } = useSession();
+
+// Login
+await signIn.email({ email, password });
+
+// Registrazione
+await signUp.email({ email, password, name });
+
+// Logout
+await signOut();
+```
+
+### Route Disponibili
+- `/login` - Pagina di login/registrazione
+- `/dashboard` - Dashboard protetta (richiede autenticazione)
+
+Per maggiori dettagli, vedi [apps/web/BETTER_AUTH_SETUP.md](./apps/web/BETTER_AUTH_SETUP.md)
 
 ## 🚀 Deploy
 
@@ -104,6 +142,8 @@ Vedi [DEPLOYMENT.md](./DEPLOYMENT.md) per istruzioni complete su come deployare 
 ## 📖 Documentazione
 
 - [Deploy Guide](./DEPLOYMENT.md) - Guida completa al deployment
+- [Better Auth Setup](./apps/web/BETTER_AUTH_SETUP.md) - Guida all'autenticazione
+- [Database Commands](./packages/db/DATABASE_COMMANDS.md) - Comandi database
 - [Frontend README](./apps/web/README.md)
 - [API README](./apps/api/README.md)
 - [Database README](./packages/db/README.md)

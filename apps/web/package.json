@@ -12,6 +12,7 @@
   "dependencies": {
     "@repo/db": "workspace:*",
     "@tanstack/react-query": "^5.90.3",
+    "better-auth": "^1.3.27",
     "next": "15.5.5",
     "react": "19.1.0",
     "react-dom": "19.1.0"
