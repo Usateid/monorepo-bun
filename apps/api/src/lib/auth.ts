@@ -88,8 +88,8 @@ export async function checkAuthorization(c: Context): Promise<AuthResult> {
     try {
       const JWKS = createRemoteJWKSet(
         new URL(
-          process.env.NEXT_PUBLIC_APP_URL ||
-            "http://localhost:3000/api/auth/jwks"
+          (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000") +
+            "/api/auth/jwks"
         )
       );
       const { payload } = await jwtVerify(token, JWKS, {
