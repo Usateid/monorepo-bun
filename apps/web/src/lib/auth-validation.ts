@@ -7,15 +7,15 @@ export type ActionState = {
   success?: boolean;
   message?: string;
   fieldErrors?: Record<string, string>;
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
-type ValidatedActionFunction<S extends z.ZodType<any, any>, T> = (
+type ValidatedActionFunction<S extends z.ZodTypeAny, T> = (
   data: z.infer<S>,
   formData: FormData
 ) => Promise<T>;
 
-export function validatedAction<S extends z.ZodType<any, any>, T>(
+export function validatedAction<S extends z.ZodTypeAny, T>(
   schema: S,
   action: ValidatedActionFunction<S, T>
 ) {
@@ -35,7 +35,7 @@ export function validatedAction<S extends z.ZodType<any, any>, T>(
   };
 }
 
-type ValidatedActionWithUserFunction<S extends z.ZodType<any, any>, T> = (
+type ValidatedActionWithUserFunction<S extends z.ZodTypeAny, T> = (
   data: z.infer<S>,
   formData: FormData,
   user: User

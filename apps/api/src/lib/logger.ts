@@ -1,7 +1,7 @@
 /**
  * Log di errore
  */
-export function errorLog(message: string, error?: any) {
+export function errorLog(message: string, error?: unknown) {
   const timestamp = new Date().toISOString();
   process.stderr.write(`\n[${timestamp}] ❌ ${message}\n`);
 

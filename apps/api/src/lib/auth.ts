@@ -1,13 +1,14 @@
 import type { Context } from "hono";
 import { db, user, jwks } from "@repo/db";
-import { eq } from "drizzle-orm";
+import { eq, type SQL } from "drizzle-orm";
 import { jwtVerify, createRemoteJWKSet } from "jose";
 import type { AuthResult } from "./types";
 import { errorLog } from "./logger";
 import { TokenErrors } from "./return-types";
+import type { JWK } from "jose";
 
 // Cache per le chiavi JWKS per evitare query ripetute al database
-let jwksCache: { keys: any[] } | null = null;
+let jwksCache: { keys: JWK[] } | null = null;
 let jwksCacheTime = 0;
 const JWKS_CACHE_TTL = 3600000; // 1 ora in millisecondi
 
@@ -15,7 +16,7 @@ const JWKS_CACHE_TTL = 3600000; // 1 ora in millisecondi
  * Recupera le chiavi JWKS dal database per la verifica dei JWT
  * Implementa una cache per migliorare le performance
  */
-async function getJWKS(): Promise<{ keys: any[] } | undefined> {
+async function getJWKS(): Promise<{ keys: JWK[] } | undefined> {
   const now = Date.now();
 
   // Usa la cache se è ancora valida
@@ -97,7 +98,11 @@ export async function checkAuthorization(c: Context): Promise<AuthResult> {
       });
 
       // Estrai l'userId dal payload verificato
-      const userId = payload.sub || (payload as any).userId;
+      const userId =
+        payload.sub ||
+        (typeof payload === "object" && payload && "userId" in payload
+          ? (payload as { userId: string }).userId
+          : undefined);
       if (!userId) {
         return TokenErrors.INVALID_PAYLOAD;
       }
@@ -106,7 +111,8 @@ export async function checkAuthorization(c: Context): Promise<AuthResult> {
       const [currentUser] = await db
         .select()
         .from(user)
-        .where((eq as any)(user.id, userId))
+        // @ts-expect-error - Drizzle ORM version conflict between dependencies
+        .where(eq(user.id, userId))
         .limit(1);
 
       if (!currentUser) {
@@ -121,11 +127,18 @@ export async function checkAuthorization(c: Context): Promise<AuthResult> {
         success: true,
         user: currentUser,
       };
-    } catch (jwtError: any) {
-      console.error("JWT verification failed:", jwtError.message);
+    } catch (jwtError: unknown) {
+      const errorMessage =
+        jwtError instanceof Error ? jwtError.message : "Unknown error";
+      console.error("JWT verification failed:", errorMessage);
 
       // Gestisci errori specifici di JWT
-      if (jwtError.code === "ERR_JWT_EXPIRED") {
+      if (
+        jwtError &&
+        typeof jwtError === "object" &&
+        "code" in jwtError &&
+        jwtError.code === "ERR_JWT_EXPIRED"
+      ) {
         return {
           success: false,
           error: "Unauthorized - Token expired",
