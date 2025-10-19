@@ -11,9 +11,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 /**
  * Opzioni per le chiamate API
  */
-interface ApiRequestInit extends RequestInit {
-  // Le opzioni standard di RequestInit sono sufficienti
-}
+type ApiRequestInit = RequestInit;
 
 /**
  * Fetch wrapper con baseURL configurato
