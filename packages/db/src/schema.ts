@@ -6,7 +6,10 @@ import {
   timestamp,
   boolean,
   primaryKey,
+  pgEnum,
 } from "drizzle-orm/pg-core";
+
+export const userRoleEnum = pgEnum("user_role", ["user", "teacher", "admin"]);
 
 // Tabella utenti per Better Auth
 export const user = pgTable("user", {
@@ -15,6 +18,7 @@ export const user = pgTable("user", {
   email: text("email").unique().notNull(),
   emailVerified: boolean("emailVerified").notNull().default(false),
   image: text("image"),
+  role: userRoleEnum("role").notNull().default("user"),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
 });
@@ -62,8 +66,18 @@ export const verification = pgTable("verification", {
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
 });
 
+export const jwks = pgTable("jwks", {
+  id: text("id").primaryKey(),
+  publicKey: text("publicKey").notNull(),
+  privateKey: text("privateKey").notNull(),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+});
+
 // Types per Better Auth
 export type InsertUser = typeof user.$inferInsert;
 export type SelectUser = typeof user.$inferSelect;
 
 export type Session = typeof session.$inferSelect;
+
+// Type per i ruoli utente
+export type UserRole = SelectUser["role"];
