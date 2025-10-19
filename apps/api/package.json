@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch --env-file=.env run src/index.ts",
+    "dev:debug": "bun --watch --env-file=.env --smol run src/index.ts",
     "build": "echo 'No build step needed for Bun'",
     "start": "bun run src/index.ts"
   },
@@ -15,10 +16,11 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "hono": "^4.9.12",
     "@repo/db": "workspace:*",
     "@repo/validation": "workspace:*",
+    "dotenv": "^16.4.7",
     "drizzle-orm": "^0.44.6",
-    "dotenv": "^16.4.7"
+    "hono": "^4.9.12",
+    "jose": "^6.1.0"
   }
 }

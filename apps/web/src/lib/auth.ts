@@ -1,8 +1,17 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db, user, session, account, verification, SelectUser } from "@repo/db";
+import {
+  db,
+  user,
+  session,
+  account,
+  verification,
+  jwks,
+  SelectUser,
+} from "@repo/db";
 import { headers } from "next/headers";
 import { nextCookies } from "better-auth/next-js";
+import { jwt } from "better-auth/plugins";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -12,6 +21,7 @@ export const auth = betterAuth({
       session,
       account,
       verification,
+      jwks,
     },
   }),
   baseURL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
@@ -30,7 +40,7 @@ export const auth = betterAuth({
       },
     },
   },
-  plugins: [nextCookies()],
+  plugins: [nextCookies(), jwt()],
 });
 
 export type Session = typeof auth.$Infer.Session;

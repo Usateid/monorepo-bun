@@ -4,14 +4,23 @@ import { auth } from "@/lib/auth";
 
 // Route pubbliche che non richiedono autenticazione
 const publicRoutes = ["/", "/login", "/api/auth", "/blog"];
+const privateRoutes = ["/profile", "/profile/users"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  const isPrivateRoute = privateRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
   // Permetti l'accesso alle route pubbliche
   const isPublicRoute = publicRoutes.some((route) =>
     pathname.startsWith(route)
   );
+
+  // if (isPrivateRoute) {
+  //   return NextResponse.redirect(new URL("/login", request.url));
+  // }
+
   if (isPublicRoute) {
     return NextResponse.next();
   }

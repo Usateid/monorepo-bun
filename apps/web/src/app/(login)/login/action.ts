@@ -16,14 +16,12 @@ export async function signUp(name: string, email: string, password: string) {
 export const signUpAction = validatedAction(
   signUpSchema,
   async (data, formData) => {
-    console.log("ciao!");
     const { email, password, name } = data;
 
     try {
-      const asd = await auth.api.signUpEmail({
+      await auth.api.signUpEmail({
         body: { name, email, password, callbackURL: "/" },
       });
-      console.log(asd);
     } catch (error) {
       return {
         ...data,
@@ -41,7 +39,6 @@ export const signInAction = validatedAction(
   async (data, formData) => {
     const { email, password } = data;
 
-    console.log("ciao!2");
     try {
       await auth.api.signInEmail({ body: { email, password } });
     } catch (error) {
