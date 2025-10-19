@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Calendar, User, Plus, Book, LogIn } from "lucide-react";
+import { Home, User, Plus, LogIn } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function MobileBottomTabs({

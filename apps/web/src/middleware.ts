@@ -9,9 +9,9 @@ const privateRoutes = ["/profile", "/profile/users"];
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const isPrivateRoute = privateRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+  // const isPrivateRoute = privateRoutes.some((route) =>
+  //   pathname.startsWith(route)
+  // );
   // Permetti l'accesso alle route pubbliche
   const isPublicRoute = publicRoutes.some((route) =>
     pathname.startsWith(route)
@@ -54,6 +54,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(url);
     }
   } catch (error) {
+    console.error("❌ Error checking session in middleware:", error);
     const url = new URL("/login", request.url);
     return NextResponse.redirect(url);
   }

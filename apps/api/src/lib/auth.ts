@@ -1,7 +1,7 @@
 import type { Context } from "hono";
-import { db, user, jwks, type SelectUser } from "@repo/db";
+import { db, user, jwks } from "@repo/db";
 import { eq } from "drizzle-orm";
-import { jwtVerify, createLocalJWKSet, createRemoteJWKSet } from "jose";
+import { jwtVerify, createRemoteJWKSet } from "jose";
 import type { AuthResult } from "./types";
 import { errorLog } from "./logger";
 import { TokenErrors } from "./return-types";

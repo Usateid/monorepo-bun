@@ -66,7 +66,7 @@ export async function apiFetch(
  * const data = await apiGet('/users');
  * ```
  */
-export async function apiGet<T = any>(
+export async function apiGet<T = unknown>(
   endpoint: string,
   options?: ApiRequestInit
 ): Promise<T> {
@@ -91,9 +91,9 @@ export async function apiGet<T = any>(
  * const data = await apiPost('/users', { name: 'John', email: 'john@example.com' });
  * ```
  */
-export async function apiPost<T = any>(
+export async function apiPost<T = unknown>(
   endpoint: string,
-  body?: any,
+  body?: unknown,
   options?: ApiRequestInit
 ): Promise<T> {
   const response = await apiFetch(endpoint, {
@@ -118,9 +118,9 @@ export async function apiPost<T = any>(
  * const data = await apiPut('/users/1', { name: 'John Updated' });
  * ```
  */
-export async function apiPut<T = any>(
+export async function apiPut<T = unknown>(
   endpoint: string,
-  body?: any,
+  body?: unknown,
   options?: ApiRequestInit
 ): Promise<T> {
   const response = await apiFetch(endpoint, {
@@ -145,7 +145,7 @@ export async function apiPut<T = any>(
  * await apiDelete('/users/1');
  * ```
  */
-export async function apiDelete<T = any>(
+export async function apiDelete<T = unknown>(
   endpoint: string,
   options?: ApiRequestInit
 ): Promise<T> {

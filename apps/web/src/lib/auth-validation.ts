@@ -1,7 +1,6 @@
 export * from "@repo/validation";
 import { z } from "zod";
 import type { User } from "./auth";
-import { getSession } from "./auth";
 
 export type ActionState = {
   error?: boolean;
