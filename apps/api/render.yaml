@@ -10,6 +10,7 @@ services:
       paths:
         - apps/api/**
         - packages/db/**
+        - packages/validation/**
         - package.json
         - bun.lock
         - apps/api/Dockerfile
