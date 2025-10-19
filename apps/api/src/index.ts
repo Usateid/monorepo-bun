@@ -1,81 +1,24 @@
 import { Hono } from "hono";
-import { cors } from "hono/cors";
-// Importa il client e le definizioni dello schema dal pacchetto condiviso
-import { db, users, type SelectUser } from "@repo/db";
-import { eq } from "drizzle-orm";
+import { corsMiddleware } from "./middleware/cors";
+import { setupRoutes } from "./routes";
 
+// Inizializza l'app Hono
 const app = new Hono();
 
-// Configura CORS per permettere richieste dal frontend
-app.use(
-  "/*",
-  cors({
-    origin: [
-      process.env.FRONTEND_URL || "http://localhost:3000",
-      "http://localhost:3000", // per sviluppo locale
-    ],
-    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+// Applica il middleware CORS globalmente
+app.use("/*", corsMiddleware);
 
-app.get("/", (c) => {
-  return c.json({ message: "Welcome!" });
-});
-app.get("/health", (c) => {
-  const user = [{ id: 1, name: "John Doe", email: "john.doe@example.com" }];
-  return c.json(user);
-});
-app.get("/users", async (c) => {
-  try {
-    const userList = [
-      { id: 1, name: "John Doe", email: "john.doe@example.com" },
-      { id: 2, name: "Jane Doe", email: "jane.doe@example.com" },
-    ];
-    // const userList = await db.select().from(users);
-    return c.json(userList);
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    return c.json(
-      {
-        error: "Failed to fetch users",
-        details: error instanceof Error ? error.message : "Unknown error",
-      },
-      500
-    );
-  }
-});
+// Setup di tutte le routes
+setupRoutes(app);
 
-// app.get("/users/:id", async (c) => {
-//   const userId = parseInt(c.req.param("id"));
-
-//   if (isNaN(userId)) {
-//     return c.json({ error: "Invalid ID" }, 400);
-//   }
-
-//   // Esegui la query usando il client condiviso
-//   //   const user: SelectUser[] = await db
-//   //     .select()
-//   //     .from(users)
-//   //     .where(eq(users.id, userId));
-
-//   //   if (user.length === 0) {
-//   //     return c.json({ error: "User not found" }, 404);
-//   //   }
-
-//   //   return c.json(user[0]);
-// });
-
+// Configurazione del server
 const port = process.env.PORT || 3001;
 
-// Start server and store server instance
+// Avvia il server e memorizza l'istanza
 const server = Bun.serve({
   port,
   fetch: app.fetch,
 });
-
-console.log(`🚀 Server is running on http://localhost:${port}`);
 
 // Graceful shutdown handler
 const gracefulShutdown = async (signal: string) => {
@@ -86,7 +29,7 @@ const gracefulShutdown = async (signal: string) => {
     server.stop();
     console.log("✅ Server stopped accepting new connections");
 
-    // Give ongoing requests time to complete (max 10 seconds)
+    // Give ongoing requests time to complete (max 1 second)
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     console.log("✅ Graceful shutdown completed");

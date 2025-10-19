@@ -1,6 +1,6 @@
 {
-  "id": "4b1dcc67-b975-4b39-85e3-42c23c1a2bd1",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "1951326b-7337-4bde-8dd7-9cf89cc370f9",
+  "prevId": "4b1dcc67-b975-4b39-85e3-42c23c1a2bd1",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -105,6 +105,44 @@
           "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.jwks": {
+      "name": "jwks",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "publicKey": {
+          "name": "publicKey",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "privateKey": {
+          "name": "privateKey",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
