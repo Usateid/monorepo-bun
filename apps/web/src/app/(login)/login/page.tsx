@@ -70,7 +70,7 @@ export default function LoginPage() {
                     aria-describedby={state.error ? "form-error" : undefined}
                     className="w-full px-4 py-3 rounded-lg border border-sage-300 bg-white text-sage-900 placeholder-sage-400 focus:outline-none focus:ring-2 focus:ring-sage-600 focus:border-transparent transition-all"
                     placeholder="Mario Rossi"
-                    defaultValue={state.name}
+                    defaultValue={state.name as string | undefined}
                   />
                 </div>
               )}
@@ -93,7 +93,7 @@ export default function LoginPage() {
                   aria-describedby={state.error ? "form-error" : undefined}
                   className="w-full px-4 py-3 rounded-lg border border-sage-300 bg-white text-sage-900 placeholder-sage-400 focus:outline-none focus:ring-2 focus:ring-sage-600 focus:border-transparent transition-all"
                   placeholder="tu@esempio.it"
-                  defaultValue={state.email}
+                  defaultValue={state.email as string | undefined}
                 />
               </div>
 
@@ -129,7 +129,7 @@ export default function LoginPage() {
                   aria-describedby={state.error ? "form-error" : undefined}
                   className="w-full px-4 py-3 rounded-lg border border-sage-300 bg-white text-sage-900 placeholder-sage-400 focus:outline-none focus:ring-2 focus:ring-sage-600 focus:border-transparent transition-all"
                   placeholder="••••••••"
-                  defaultValue={state.password}
+                  defaultValue={state.password as string | undefined}
                 />
               </div>
               {isSignUp && (
@@ -153,7 +153,7 @@ export default function LoginPage() {
                     aria-describedby={state.error ? "form-error" : undefined}
                     className="w-full px-4 py-3 rounded-lg border border-sage-300 bg-white text-sage-900 placeholder-sage-400 focus:outline-none focus:ring-2 focus:ring-sage-600 focus:border-transparent transition-all"
                     placeholder="••••••••"
-                    defaultValue={state.confirmPassword}
+                    defaultValue={state.confirmPassword as string | undefined}
                   />
                 </div>
               )}
